@@ -148,7 +148,7 @@ class MetareviewgeneratorController < ApplicationController
     end
   end
   def index
-
+    Automated_Metareview.calculate_volumn_from_csv
   end
 
 end

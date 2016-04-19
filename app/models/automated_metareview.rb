@@ -345,18 +345,47 @@ class Automated_Metareview
 
   def self.calculate_volumn_from_csv
     semester = '2016s'
-      old_csv = CSV.read("./csv/#{semester}.csv")
-      CSV.open("./csv/new_#{semester}.csv", "wb") do |new_csv|
-        old_csv.each_with_index do |row, index|
-          if index == 0
-            new_csv << row.insert(1, 'volume') 
-          else
-            new_csv << row.insert(1, volume(row[1])['volume'])
-          end
+    old_csv = CSV.read("./csv/#{semester}.csv")
+    CSV.open("./csv/new_#{semester}.csv", "wb") do |new_csv|
+      old_csv.each_with_index do |row, index|
+        if index == 0
+          new_csv << row.insert(1, 'volume') 
+        else
+          new_csv << row.insert(1, volume(row[1])['volume'])
         end
       end
     end
+  end
 
+  def self.content(comments)
+    review_array=Array.new
+    submission=Array.new
+    review_array[0] = comments
+    #iterate over each input and generate output
+    for i in (0..review_array.length - 1)
+      automated_meta_review = Automated_Metareview.new
+      review = Array.new
+      review << review_array[i]
+      features = automated_meta_review.calculate_metareview_metric_content(review)
+      #write the features out to a file
+      return features
+    end
+  end
+
+  def self.calculate_volumn_from_csv
+    semester = '2011f'
+    old_csv = CSV.read("./csv/#{semester}.csv")
+    CSV.open("./csv/new_#{semester}.csv", "wb") do |new_csv|
+      old_csv.each_with_index do |row, index|
+        if index == 0
+          new_csv << row.insert(1, 'content (suggestion)') 
+        else
+    binding.pry
+          new_csv << row.insert(1, content(row[1])['volume'])
+        end
+      end
+    end
+  end
 end #end of class
 
 
